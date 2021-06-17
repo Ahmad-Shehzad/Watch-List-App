@@ -26,6 +26,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(this, ViewList.class));
     }
 
+    public void goToRandom(){
+        startActivity(new Intent(this, RandomOutput.class));
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         pickMovie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                goToRandom();
             }
         });
 
@@ -52,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         pickTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                goToRandom();
             }
         });
 
@@ -72,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
                 String name = entryName.getText().toString(); //get input data and convert to string to store in database
                 String cat = category.getSelectedItem().toString();
 
+                //need to add SQL bit here
             }
         });
     }
