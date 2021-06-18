@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -18,6 +17,8 @@ public class MainActivity extends AppCompatActivity {
 
     EditText entryName;
     Spinner category;
+    String path;
+    int id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +76,9 @@ public class MainActivity extends AppCompatActivity {
                 String name = entryName.getText().toString(); //get input data and convert to string to store in database
                 String cat = category.getSelectedItem().toString();
 
-                db.add(name, cat, 0); //need a method to find api id, set 0 for now
+                TMDbHandler tmdb = new TMDbHandler(name, cat);
+
+                db.add(name, cat, id, path);
                 entryName.setText("");
             }
         });

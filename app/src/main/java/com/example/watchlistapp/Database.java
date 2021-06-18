@@ -18,6 +18,7 @@ public class Database extends SQLiteOpenHelper {
     public static final String COLUMN_TITLE = "Title";
     public static final String COLUMN_CATEGORY = "Category";
     public static final String COLUMN_API = "API";
+    public static final String COLUMN_POSTER = "Poster";
 
     public Database(Context context) {
         super(context, DATABASE_NAME, null, 1);
@@ -25,7 +26,7 @@ public class Database extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE " + TABLE_NAME + " (" + COLUMN_ID + " INTEGERPRIMARYKEY, "+ COLUMN_TITLE + " TEXT, " + COLUMN_CATEGORY + " TEXT, " + COLUMN_API + " TEXT)");
+        db.execSQL("CREATE TABLE " + TABLE_NAME + " (" + COLUMN_ID + " INTEGERPRIMARYKEY, "+ COLUMN_TITLE + " TEXT, " + COLUMN_CATEGORY + " TEXT, " + COLUMN_API + " TEXT, " + COLUMN_POSTER + " TEXT)");
     }
 
     @Override
@@ -35,7 +36,7 @@ public class Database extends SQLiteOpenHelper {
     }
 
     //Method for adding entries to the list
-    public void add (String title, String category, int apiID) {
+    public void add (String title, String category, int apiID, String path) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues content = new ContentValues();
 
@@ -43,6 +44,7 @@ public class Database extends SQLiteOpenHelper {
         content.put(COLUMN_TITLE, title);
         content.put(COLUMN_CATEGORY, category);
         content.put(COLUMN_API, apiID);
+        content.put(COLUMN_POSTER, path);
 
         db.insert(TABLE_NAME, null, content);
 
