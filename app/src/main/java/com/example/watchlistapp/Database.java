@@ -28,7 +28,7 @@ public class Database extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
-        db.execSQL("DROP TABLE IF EXISTS contacts");
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(db);
     }
 
@@ -37,10 +37,12 @@ public class Database extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues content = new ContentValues();
 
-        content.put(COLUMN_ID, entries() + 1);
+        content.put(COLUMN_ID, (entries() + 1));
         content.put(COLUMN_TITLE, title);
         content.put(COLUMN_CATEGORY, category);
         content.put(COLUMN_API, apiID);
+
+        db.insert(TABLE_NAME, null, content);
 
         db.close();
     }
@@ -49,7 +51,6 @@ public class Database extends SQLiteOpenHelper {
     public int entries() {
         SQLiteDatabase db = this.getReadableDatabase();
         int num = (int) DatabaseUtils.queryNumEntries(db, TABLE_NAME);
-        db.close();
         return num;
     }
 
@@ -58,7 +59,7 @@ public class Database extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_NAME, COLUMN_ID + " = ?", new String[] {Integer.toString(id)});
         db.close();
-    }//need to consider what happens to the ids when item deleted for random generation, may need renumbering system
+    }//need to consider what happens to the ids when item deleted for random generation, may need renumbering system or different way of choosing random entry
 
 }
 

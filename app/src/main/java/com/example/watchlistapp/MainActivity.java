@@ -14,29 +14,21 @@ import android.widget.Spinner;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    //Adding objects
-    Button view = findViewById(R.id.view);
-    Button pickMovie = findViewById(R.id.movie);
-    Button pickTV = findViewById(R.id.tv);
-    Button add = findViewById(R.id.add);
-    EditText entryName = findViewById(R.id.entryName);
-    Spinner category = findViewById(R.id.category);
 
-    //Methods to navigate between activities
-    public void goToView(){
-        startActivity(new Intent(this, ViewList.class));
-    }
-
-    public void goToRandom(){
-        startActivity(new Intent(this, RandomOutput.class));
-    }
+    EditText entryName;
+    Spinner category;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Adding objects
         final Database db = new Database(this);
+        Button view = findViewById(R.id.view);
+        Button pickMovie = findViewById(R.id.movie);
+        Button pickTV = findViewById(R.id.tv);
+        Button add = findViewById(R.id.add);
 
         //Programming the view list button
         view.setOnClickListener(new View.OnClickListener() {
@@ -45,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
                 goToView();
             }
         });
-
 
         //Programming the pick movie button
         pickMovie.setOnClickListener(new View.OnClickListener() {
@@ -62,6 +53,10 @@ public class MainActivity extends AppCompatActivity {
                 goToRandom();
             }
         });
+
+        //Adding input fields
+        entryName = findViewById(R.id.entryName);
+        category = findViewById(R.id.category);
 
         //Adding options to the spinner
         ArrayList<String> categories = new ArrayList<>();
@@ -80,7 +75,18 @@ public class MainActivity extends AppCompatActivity {
                 String cat = category.getSelectedItem().toString();
 
                 db.add(name, cat, 0); //need a method to find api id, set 0 for now
+                entryName.setText("");
             }
         });
+
+    }
+
+    //Methods to navigate between activities
+    public void goToView(){
+        startActivity(new Intent(this, ViewList.class));
+    }
+
+    public void goToRandom(){
+        startActivity(new Intent(this, RandomOutput.class));
     }
 }
