@@ -2,10 +2,13 @@ package com.example.watchlistapp;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.ArrayAdapter;
 
+import java.util.ArrayList;
 
 
 public class Database extends SQLiteOpenHelper {
@@ -59,8 +62,48 @@ public class Database extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_NAME, COLUMN_ID + " = ?", new String[] {Integer.toString(id)});
         db.close();
-    }//need to consider what happens to the ids when item deleted for random generation, may need renumbering system or different way of choosing random entry
+    }
 
+    public String getEntry(int id, String cat) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_ID + " = '" + id + "'" + " AND " + COLUMN_CATEGORY + " = '" + cat + "'", null);
+        cursor.moveToFirst();
+
+        return cursor.getString(cursor.getColumnIndex(COLUMN_TITLE));
+    }
+
+    //Method returns an array of all films or tv shows
+    public ArrayList<String> getEntries(String cat) {
+        ArrayList<String> entries = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_CATEGORY + " = '" + cat +"'", null);
+        cursor.moveToFirst();
+
+        while (cursor.isAfterLast() == false) {
+            entries.add(cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)));
+            cursor.moveToNext();
+        }
+
+        return entries;
+    }
+
+    //returns ids of entries from a certain category
+    public ArrayList<Integer> getIds(String cat) {
+        ArrayList<Integer> ids = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_CATEGORY + " = '" + cat + "'", null);
+        cursor.moveToFirst();
+
+        while (cursor.isAfterLast() == false) {
+            ids.add(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)));
+            cursor.moveToNext();
+        }
+
+        return ids;
+    }
 }
 
 

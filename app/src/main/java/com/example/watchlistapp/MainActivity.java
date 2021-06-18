@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         pickMovie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                goToRandom();
+                goToRandom("Film");
             }
         });
 
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         pickTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                goToRandom();
+                goToRandom("TV Show");
             }
         });
 
@@ -86,7 +87,18 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(this, ViewList.class));
     }
 
-    public void goToRandom(){
-        startActivity(new Intent(this, RandomOutput.class));
+    public void goToRandom(String category){
+        Database db = new Database(this);
+        int length = db.getIds(category).size();
+        Toast toast = Toast.makeText(this, "No entries in " + category, Toast.LENGTH_SHORT);
+
+        if (length == 0 ){
+            toast.show();
+        }
+        else {
+            Intent intent = new Intent(this, RandomOutput.class);
+            intent.putExtra("Category", category);
+            startActivity(intent);
+        }
     }
 }
