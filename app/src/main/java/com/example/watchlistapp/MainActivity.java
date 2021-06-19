@@ -3,6 +3,7 @@ package com.example.watchlistapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -11,6 +12,14 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -19,6 +28,10 @@ public class MainActivity extends AppCompatActivity {
     Spinner category;
     String path;
     int id;
+    Database db;
+    String name;
+    String cat;
+    String cat2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //Adding objects
-        final Database db = new Database(this);
+        db = new Database(this);
         Button view = findViewById(R.id.view);
         Button pickMovie = findViewById(R.id.movie);
         Button pickTV = findViewById(R.id.tv);
@@ -73,12 +86,18 @@ public class MainActivity extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String name = entryName.getText().toString(); //get input data and convert to string to store in database
-                String cat = category.getSelectedItem().toString();
+                name = entryName.getText().toString(); //get input data and convert to string to store in database
+                cat = category.getSelectedItem().toString();
 
-                TMDbHandler tmdb = new TMDbHandler(name, cat);
+                if (cat.equals("Film")) { //for API search
+                    cat2 = "movie";
+                }
+                else {
+                    cat2 = "tv";
+                }
 
-                db.add(name, cat, id, path);
+                new genFilm().execute(); //calls API to get data
+
                 entryName.setText("");
             }
         });
@@ -102,6 +121,52 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, RandomOutput.class);
             intent.putExtra("Category", category);
             startActivity(intent);
+        }
+    }
+
+    //API connection and data retrieval
+    public class genFilm extends AsyncTask<Void, Void, Void> {
+        String result;
+
+        @Override
+        public Void doInBackground(Void... voids) {
+            String url = "https://api.themoviedb.org/3/search/" + cat2;
+            String key = "cc6cada9d5dfe3c0f069fc0472fc604f";
+            URL requestURL;
+            try {
+                requestURL = new URL(url + "?api_key=" + key + "&query=" + name);
+                InputStreamReader in = new InputStreamReader(requestURL.openStream());
+                BufferedReader bufferedReader = new BufferedReader(in);
+                String stringBuffer;
+                String string = "";
+                while ((stringBuffer = bufferedReader.readLine()) != null){
+                    string = String.format("%s%s", string, stringBuffer);
+                }
+                bufferedReader.close();
+                result = string;
+
+            } catch (IOException e){
+                e.printStackTrace();
+                result = e.toString();
+            }
+            return null;
+        }
+        @Override
+        public void onPostExecute(Void aVoid) {
+            try {
+                JSONObject searchResults = new JSONObject(result);
+                JSONArray results = searchResults.getJSONArray("results");
+                JSONObject bestMatch = (JSONObject) results.get(0);
+
+                path = bestMatch.getString("poster_path");
+                id = bestMatch.getInt("id");
+
+                db.add(name,cat,id, path);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            super.onPostExecute(aVoid);
         }
     }
 }
