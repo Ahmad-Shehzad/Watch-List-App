@@ -23,19 +23,19 @@ public class RandomOutput extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_random_output);
 
-        genFilm();
+        newEntry();
 
         Button generateNew = findViewById(R.id.generateNew);
         generateNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                genFilm();
+                newEntry();
             }
         });
 
     }
 
-    private void genFilm() {
+    private void newEntry() {
         output = findViewById(R.id.output);
         poster = findViewById(R.id.poster);
         Bundle bundle = getIntent().getExtras();

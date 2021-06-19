@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
                     cat2 = "tv";
                 }
 
-                new genFilm().execute(); //calls API to get data
+                new genInfo().execute(); //calls API to get data
 
                 entryName.setText("");
             }
@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //API connection and data retrieval
-    public class genFilm extends AsyncTask<Void, Void, Void> {
+    public class genInfo extends AsyncTask<Void, Void, Void> {
         String result;
 
         @Override
