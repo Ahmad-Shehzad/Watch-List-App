@@ -42,7 +42,15 @@
         android:id="@+id/poster"
         android:layout_width="375dp"
         android:layout_height="429dp"
-        app:srcCompat="?attr/selectableItemBackground"
-        tools:layout_editor_absoluteX="18dp"
-        tools:layout_editor_absoluteY="21dp" />
+        android:layout_marginStart="18dp"
+        android:layout_marginLeft="18dp"
+        android:layout_marginTop="21dp"
+        android:layout_marginEnd="18dp"
+        android:layout_marginRight="18dp"
+        android:layout_marginBottom="281dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="?attr/selectableItemBackground" />
 </androidx.constraintlayout.widget.ConstraintLayout>

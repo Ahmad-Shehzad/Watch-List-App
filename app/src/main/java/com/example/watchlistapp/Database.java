@@ -116,6 +116,16 @@ public class Database extends SQLiteOpenHelper {
 
         return ids;
     }
+
+    //get ID for deleting entry
+    public int getID(String title, String cat) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_TITLE + " = '" + title + "' AND " + COLUMN_CATEGORY + " = '" + cat + "'", null);
+        cursor.moveToFirst();
+
+        return cursor.getInt(cursor.getColumnIndex(COLUMN_ID));
+    }
 }
 
 
