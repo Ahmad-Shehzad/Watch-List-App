@@ -12,10 +12,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="176dp"
         android:layout_marginLeft="176dp"
-        android:layout_marginTop="355dp"
+        android:layout_marginTop="479dp"
         android:layout_marginEnd="177dp"
         android:layout_marginRight="177dp"
-        android:layout_marginBottom="357dp"
+        android:layout_marginBottom="233dp"
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -37,4 +37,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/poster"
+        android:layout_width="375dp"
+        android:layout_height="429dp"
+        app:srcCompat="?attr/selectableItemBackground"
+        tools:layout_editor_absoluteX="18dp"
+        tools:layout_editor_absoluteY="21dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

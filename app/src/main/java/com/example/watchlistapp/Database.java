@@ -65,6 +65,7 @@ public class Database extends SQLiteOpenHelper {
         db.close();
     }
 
+    //Returns entry name
     public String getEntry(int id, String cat) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -72,6 +73,16 @@ public class Database extends SQLiteOpenHelper {
         cursor.moveToFirst();
 
         return cursor.getString(cursor.getColumnIndex(COLUMN_TITLE));
+    }
+
+    //Returns poster path for an entry
+    public String getPath(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_ID + " = '" + id + "'", null);
+        cursor.moveToFirst();
+
+        return cursor.getString(cursor.getColumnIndex(COLUMN_POSTER));
     }
 
     //Method returns an array of all films or tv shows

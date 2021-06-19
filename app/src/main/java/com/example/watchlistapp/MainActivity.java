@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Adding objects
         db = new Database(this);
+
         Button view = findViewById(R.id.view);
         Button pickMovie = findViewById(R.id.movie);
         Button pickTV = findViewById(R.id.tv);
@@ -133,16 +134,20 @@ public class MainActivity extends AppCompatActivity {
             String url = "https://api.themoviedb.org/3/search/" + cat2;
             String key = "cc6cada9d5dfe3c0f069fc0472fc604f";
             URL requestURL;
+
             try {
                 requestURL = new URL(url + "?api_key=" + key + "&query=" + name);
                 InputStreamReader in = new InputStreamReader(requestURL.openStream());
                 BufferedReader bufferedReader = new BufferedReader(in);
                 String stringBuffer;
                 String string = "";
+
                 while ((stringBuffer = bufferedReader.readLine()) != null){
                     string = String.format("%s%s", string, stringBuffer);
                 }
+
                 bufferedReader.close();
+
                 result = string;
 
             } catch (IOException e){

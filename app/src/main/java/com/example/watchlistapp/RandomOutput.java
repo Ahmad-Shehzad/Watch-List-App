@@ -5,13 +5,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 public class RandomOutput extends AppCompatActivity {
 
     TextView output;
+    ImageView poster;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +37,7 @@ public class RandomOutput extends AppCompatActivity {
 
     private void genFilm() {
         output = findViewById(R.id.output);
+        poster = findViewById(R.id.poster);
         Bundle bundle = getIntent().getExtras();
         String cat = bundle.getString("Category");
 
@@ -40,6 +46,11 @@ public class RandomOutput extends AppCompatActivity {
 
         int length = ids.size();
         int index = (int) (Math.random()*length);
-        output.setText(db.getEntry(ids.get(index), cat));
+        int id = ids.get(index);
+
+        String path = db.getPath(id);
+
+        Picasso.with(RandomOutput.this).load("https://image.tmdb.org/t/p/w500"+path).fit().into(poster);
+        output.setText(db.getEntry(id, cat));
     }
 }
