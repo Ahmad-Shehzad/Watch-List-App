@@ -13,7 +13,6 @@ import java.util.ArrayList;
 public class ViewList extends AppCompatActivity {
 
     ListView list;
-    ListView list2;
     Database db;
 
     @Override
@@ -24,39 +23,41 @@ public class ViewList extends AppCompatActivity {
         //Temporary layout, ideally need to create custom one
         db = new Database(this);
         list = findViewById(R.id.filmList);
-        list2 = findViewById(R.id.tvList);
 
         updateLists();
 
         list.setOnItemLongClickListener(new ListView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                db.delete(db.getID(list.getItemAtPosition(i).toString(), "Film"));
-                updateLists();
-                return false;
+                System.out.println(i);
+                System.out.println(db.getEntries("Film").size());
+                if (i > db.getEntries("Film").size() + 1) {
+                    db.delete(db.getID(list.getItemAtPosition(i).toString(), "TV Show"));
+                    updateLists();
+                    return false;
+                }
+                else if (i <= db.getEntries("Film").size() && i != 0) {
+                    db.delete(db.getID(list.getItemAtPosition(i).toString(), "Film"));
+                    updateLists();
+                    return false;
+                }
+                else {
+                    return false;
+                }
             }
         });
-
-        list2.setOnItemLongClickListener(new ListView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                db.delete(db.getID(list2.getItemAtPosition(i).toString(), "TV Show"));
-                updateLists();
-                return false;
-            }
-        });
-
     }
 
     private void updateLists() {
         ArrayList<String> films = db.getEntries("Film");
         ArrayList<String> tv = db.getEntries("TV Show");
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, films);
-        ArrayAdapter<String> adpater2 = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, tv);
+        films.add(0, "Films");
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_selectable_list_item, films);
+        adapter.add("TV Shows");
+        adapter.addAll(tv);
 
         list.setAdapter(adapter);
-        list2.setAdapter(adpater2);
     }
 
 }
