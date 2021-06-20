@@ -135,6 +135,10 @@ public class Database extends SQLiteOpenHelper {
     public int getID(String title, String cat) {
         SQLiteDatabase db = this.getReadableDatabase();
 
+        if (title.contains("'")) {
+            title = title.replace("'", "''");
+        }
+
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_TITLE + " = '" + title + "' AND " + COLUMN_CATEGORY + " = '" + cat + "'", null);
         cursor.moveToFirst();
 
