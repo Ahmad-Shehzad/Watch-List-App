@@ -40,7 +40,7 @@ public class Database extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues content = new ContentValues();
 
-        content.put(COLUMN_ID, (entries() + 1));
+        content.put(COLUMN_ID, (genID()));
         content.put(COLUMN_TITLE, title);
         content.put(COLUMN_CATEGORY, category);
         content.put(COLUMN_API, apiID);
@@ -63,6 +63,20 @@ public class Database extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_NAME, COLUMN_ID + " = ?", new String[] {Integer.toString(id)});
         db.close();
+    }
+
+    //generates a unique ID
+    public int genID() {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+        cursor.moveToLast();
+        if (entries() == 0) {
+            return 1;
+        }
+        else {
+            return (cursor.getInt(cursor.getColumnIndex(COLUMN_ID)) + 1);
+        }
     }
 
     //Returns entry name
