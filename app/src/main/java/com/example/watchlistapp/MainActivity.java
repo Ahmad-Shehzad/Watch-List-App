@@ -32,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     String name;
     String cat;
     String cat2;
+    Toast added;
+    Toast err;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +84,9 @@ public class MainActivity extends AppCompatActivity {
         //Creating and adding adapter to spinner
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item, categories);
         category.setAdapter(adapter);
+
+        added = Toast.makeText(this, "Entry Added", Toast.LENGTH_SHORT);
+        err = Toast.makeText(this, "Error: Entry Cannot Be Found", Toast.LENGTH_SHORT);
 
         //Programming add button
         add.setOnClickListener(new View.OnClickListener() {
@@ -167,9 +172,11 @@ public class MainActivity extends AppCompatActivity {
                 id = bestMatch.getInt("id");
 
                 db.add(name,cat,id, path);
+                added.show();
 
             } catch (JSONException e) {
                 e.printStackTrace();
+                err.show();
             }
             super.onPostExecute(aVoid);
         }
