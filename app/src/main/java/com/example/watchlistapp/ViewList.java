@@ -65,7 +65,7 @@ public class ViewList extends AppCompatActivity {
         ArrayList<String> tv = db.getEntries("TV Show");
 
         films.add(0, "Films");
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_multiple_choice, films);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.list, films);
         adapter.add("TV Shows");
         adapter.addAll(tv);
 

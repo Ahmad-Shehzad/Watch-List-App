@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         categories.add("TV Show");
 
         //Creating and adding adapter to spinner
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item, categories);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,R.layout.spinner, categories);
         category.setAdapter(adapter);
 
         added = Toast.makeText(this, "Entry Added", Toast.LENGTH_SHORT);
