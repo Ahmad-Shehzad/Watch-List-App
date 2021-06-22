@@ -166,7 +166,10 @@ public class MainActivity extends AppCompatActivity {
             try {
                 JSONObject searchResults = new JSONObject(result);
                 JSONArray results = searchResults.getJSONArray("results");
-                JSONObject bestMatch = (JSONObject) results.get(0);
+//                JSONObject bestMatch = (JSONObject) results.get(0);
+
+                int position = bestMatch(name, results);
+                JSONObject bestMatch = (JSONObject) results.get(position);
 
                 path = bestMatch.getString("poster_path");
                 id = bestMatch.getInt("id");
@@ -179,6 +182,31 @@ public class MainActivity extends AppCompatActivity {
                 err.show();
             }
             super.onPostExecute(aVoid);
+        }
+
+        public int bestMatch(String target, JSONArray matches) throws JSONException {
+
+            Integer[] distance = new Integer[5];
+            int min = 100000000;
+            int position = 0;
+
+            for (int i=0; i<=4; i++) {
+                JSONObject match = (JSONObject) matches.get(i);
+                String result = match.getString("title");
+                int dist = target.compareTo(result);
+
+                distance[i] = Math.abs(dist);
+
+                if (name.equals(result)) {
+                    return i;
+                }
+                else if (dist < min) {
+                    min = dist;
+                    position = i;
+                }
+
+            }
+            return position;
         }
     }
 }
