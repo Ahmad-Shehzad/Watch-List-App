@@ -35,6 +35,7 @@ public class RandomOutput extends AppCompatActivity {
 
     }
 
+    //sets poster and text
     private void newEntry() {
         output = findViewById(R.id.output);
         poster = findViewById(R.id.poster);

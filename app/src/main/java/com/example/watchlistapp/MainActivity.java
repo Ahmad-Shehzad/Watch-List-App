@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,R.layout.spinner, categories);
         category.setAdapter(adapter);
 
+        //Initialising confirmation pop-ups for successful additions and errors
         added = Toast.makeText(this, "Entry Added", Toast.LENGTH_SHORT);
         err = Toast.makeText(this, "Error: Entry Cannot Be Found", Toast.LENGTH_SHORT);
 
@@ -116,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void goToRandom(String category){
+        //Ensures there are entries in the selected category
         Database db = new Database(this);
         int length = db.getIds(category).size();
         Toast toast = Toast.makeText(this, "No entries in " + category, Toast.LENGTH_SHORT);
@@ -130,16 +132,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //API connection and data retrieval
+    //API connection and data retrieval/storage
     public class genInfo extends AsyncTask<Void, Void, Void> {
         String result;
 
         @Override
         public Void doInBackground(Void... voids) {
+            //API information
             String url = "https://api.themoviedb.org/3/search/" + cat2;
             String key = "cc6cada9d5dfe3c0f069fc0472fc604f";
             URL requestURL;
 
+            //API request and retrieval
             try {
                 requestURL = new URL(url + "?api_key=" + key + "&query=" + name);
                 InputStreamReader in = new InputStreamReader(requestURL.openStream());
@@ -164,12 +168,14 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onPostExecute(Void aVoid) {
             try {
+                //Gathers results
                 JSONObject searchResults = new JSONObject(result);
                 JSONArray results = searchResults.getJSONArray("results");
 
-                int position = bestMatch(name, results);
-                JSONObject bestMatch = (JSONObject) results.get(position);
+                int position = bestMatch(name, results); //finds the position of the best match from the results
+                JSONObject bestMatch = (JSONObject) results.get(position); //details of best match
 
+                //Stores data from API
                 path = bestMatch.getString("poster_path");
                 id = bestMatch.getInt("id");
 

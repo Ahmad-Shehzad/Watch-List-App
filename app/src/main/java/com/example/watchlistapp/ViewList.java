@@ -60,6 +60,7 @@ public class ViewList extends AppCompatActivity {
         });
     }
 
+    //after deleting entry updates all entries in the list
     private void updateLists() {
         ArrayList<String> films = db.getEntries("Film");
         ArrayList<String> tv = db.getEntries("TV Show");
