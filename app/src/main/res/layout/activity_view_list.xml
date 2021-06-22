@@ -13,6 +13,7 @@
         android:layout_height="591dp"
         android:background="@color/background"
         tools:layout_editor_absoluteX="25dp"
-        tools:layout_editor_absoluteY="70dp"></ListView>
+        tools:layout_editor_absoluteY="70dp">
+    </ListView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

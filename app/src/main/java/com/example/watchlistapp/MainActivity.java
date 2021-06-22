@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
         //Checks the first 5 results and returns the position of the closest match
         public int bestMatch(String target, JSONArray matches, int num) throws JSONException {
 
-            Integer[] distance = new Integer[5];
+            Integer[] distance = new Integer[num];
             int min = 100000000;
             int position = 0;
 
