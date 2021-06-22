@@ -166,7 +166,6 @@ public class MainActivity extends AppCompatActivity {
             try {
                 JSONObject searchResults = new JSONObject(result);
                 JSONArray results = searchResults.getJSONArray("results");
-//                JSONObject bestMatch = (JSONObject) results.get(0);
 
                 int position = bestMatch(name, results);
                 JSONObject bestMatch = (JSONObject) results.get(position);
@@ -184,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
             super.onPostExecute(aVoid);
         }
 
+        //Checks the first 5 results and returns the position of the closest match
         public int bestMatch(String target, JSONArray matches) throws JSONException {
 
             Integer[] distance = new Integer[5];
