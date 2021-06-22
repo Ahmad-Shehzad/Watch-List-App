@@ -1,4 +1,8 @@
 # Watch-List-App
+
+![github](https://user-images.githubusercontent.com/73789931/122910233-e0a84a00-d34d-11eb-80ad-2ffb21d37513.png)
+
+
 An android application to store and view your film and tv show recommendations.
 
 This application takes user input of a film/tv show, looks up the entry in The Movie Database via their API, finds the best match and stores the details in a SQL database.
