@@ -171,8 +171,9 @@ public class MainActivity extends AppCompatActivity {
                 //Gathers results
                 JSONObject searchResults = new JSONObject(result);
                 JSONArray results = searchResults.getJSONArray("results");
+                int numResults = searchResults.getInt("total_results");
 
-                int position = bestMatch(name, results); //finds the position of the best match from the results
+                int position = bestMatch(name, results, numResults); //finds the position of the best match from the results
                 JSONObject bestMatch = (JSONObject) results.get(position); //details of best match
 
                 //Stores data from API
@@ -190,15 +191,23 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //Checks the first 5 results and returns the position of the closest match
-        public int bestMatch(String target, JSONArray matches) throws JSONException {
+        public int bestMatch(String target, JSONArray matches, int num) throws JSONException {
 
             Integer[] distance = new Integer[5];
             int min = 100000000;
             int position = 0;
 
-            for (int i=0; i<=4; i++) {
+            String query;
+            if (cat.equals("Film")){
+                query="title";
+            }
+            else{
+                query="name";
+            }
+
+            for (int i=0; i<num; i++) {
                 JSONObject match = (JSONObject) matches.get(i);
-                String result = match.getString("title");
+                String result = match.getString(query);
                 int dist = target.compareTo(result);
 
                 distance[i] = Math.abs(dist);
@@ -210,7 +219,6 @@ public class MainActivity extends AppCompatActivity {
                     min = dist;
                     position = i;
                 }
-
             }
             return position;
         }
