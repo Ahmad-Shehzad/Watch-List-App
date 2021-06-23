@@ -1,21 +1,20 @@
 package com.example.watchlistapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
+
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ViewList extends AppCompatActivity {
 
-    ListView list;
     Database db;
+    RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,55 +22,43 @@ public class ViewList extends AppCompatActivity {
         setContentView(R.layout.activity_view_list);
 
         db = new Database(this);
-        list = findViewById(R.id.filmList);
-        final Toast toast = Toast.makeText(this, "Entry Deleted", Toast.LENGTH_SHORT);
-
-        final Handler handler = new Handler(); // used to add delay
-
         updateLists();
 
-        list.setOnItemClickListener(new ListView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-               final int position = i;
-
-               if (position > db.getEntries("Film").size() + 1) {
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            db.delete(db.getID(list.getItemAtPosition(position).toString(), "TV Show"));
-                            updateLists();
-                            toast.show();
-                        }
-                    }, 150);
-                }
-
-                else if (position <= db.getEntries("Film").size() && position != 0) {
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            db.delete(db.getID(list.getItemAtPosition(position).toString(), "Film"));
-                            updateLists();
-                            toast.show();
-                        }
-                    }, 150);
-                }
-            }
-        });
     }
 
-    //after deleting entry updates all entries in the list
-    private void updateLists() {
+    public void updateLists() {
         ArrayList<String> films = db.getEntries("Film");
+        int numFilm = films.size();
         ArrayList<String> tv = db.getEntries("TV Show");
 
-        films.add(0, "Films");
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.list, films);
-        adapter.add("TV Shows");
-        adapter.addAll(tv);
+        mRecyclerView = (RecyclerView) findViewById(R.id.list);
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this,LinearLayoutManager.VERTICAL));
 
-        list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        list.setAdapter(adapter);
+
+        RecyclerView.Adapter mAdapter;
+        films.addAll(tv);
+        mAdapter = new SimpleAdapter(this, films, db);
+
+
+        //Sectioned list
+        List<SimpleSectionedRecyclerViewAdapter.Section> sections = new ArrayList<SimpleSectionedRecyclerViewAdapter.Section>();
+
+        //Sections
+        sections.add(new SimpleSectionedRecyclerViewAdapter.Section(0,"Films"));
+        sections.add(new SimpleSectionedRecyclerViewAdapter.Section(numFilm,"TV Shows"));
+
+        //Add adapter to the sectionAdapter
+        SimpleSectionedRecyclerViewAdapter.Section[] dummy = new SimpleSectionedRecyclerViewAdapter.Section[sections.size()];
+        SimpleSectionedRecyclerViewAdapter mSectionedAdapter = new SimpleSectionedRecyclerViewAdapter(this,R.layout.section,R.id.sectionText,mAdapter);
+        mSectionedAdapter.setSections(sections.toArray(dummy));
+
+        mRecyclerView.setAdapter(mSectionedAdapter);
+
+
     }
+
+
 
 }
