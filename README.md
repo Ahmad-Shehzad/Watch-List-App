@@ -15,6 +15,8 @@ The application has three features:
 
 Additionally you are able to remove items from your list.
 
+
 Posters provided by TMDb (The Movie Database)
+
 Sectioned List layout - https://gist.github.com/gabrielemariotti/4c189fb1124df4556058
 
